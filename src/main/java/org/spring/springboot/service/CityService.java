@@ -10,39 +10,38 @@ import reactor.core.publisher.Mono;
 @Component
 public class CityService {
 
-    private final CityRepository cityRepository;
+    private final CityRepository cr;
 
     @Autowired
-    public CityService(CityRepository cityRepository) {
-        this.cityRepository = cityRepository;
+    public CityService(CityRepository cr) {
+        this.cr = cr;
     }
 
     public Mono<City> save(City city) {
-        Mono<City> s=cityRepository.save(city);
+        Mono<City> s=cr.save(city);
         return s;
     }
 
     public Mono<City> findCityById(Long id) {
-        Mono<City> temp=cityRepository.findById(id);
+        Mono<City> temp=cr.findById(id);
         return temp;
     }
 
     public Flux<City> findAllCity() {
-
-        return cityRepository.findAll();
+        return cr.findAll();
     }
 
     public Mono<City> modifyCity(City city) {
-
-        return cityRepository.save(city);
+        return cr.save(city);
     }
 
     public Mono<Long> deleteCity(Long id) {
-        cityRepository.deleteById(id);
-        return Mono.create(cityMonoSink -> cityMonoSink.success(id));
+        cr.deleteById(id);
+        return Mono.create(sink -> sink.success(id));
     }
 
     public Mono<City> getByCityName(String cityName) {
-        return cityRepository.findByCityName(cityName);
+        return cr.findByCityName(cityName);
     }
+
 }

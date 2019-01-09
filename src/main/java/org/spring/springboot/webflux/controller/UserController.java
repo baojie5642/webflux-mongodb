@@ -6,6 +6,7 @@ import org.spring.springboot.random.LocalRandom;
 import org.spring.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,8 +28,10 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public Flux<User> list() {
-        return user.list();
+    public String list(final Model model) {
+        final Flux<User> list = user.list();
+        model.addAttribute("userList", list);
+        return "userList";
     }
 
     @GetMapping("/{id}")
@@ -44,7 +47,7 @@ public class UserController {
     @GetMapping("/add")
     public Mono<User> update() {
         LocalRandom random = LocalRandom.current();
-        String id=random.nextInt(774455693)+"";
+        String id = random.nextInt(774455693) + "";
         final User u = new User();
         u.setId(id);
 
